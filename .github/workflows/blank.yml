@@ -17,8 +17,10 @@ jobs:
           mkdir chroot
           sudo wget -c "$(curl https://www.gentoo.org/downloads/ | sed "s/.*href=\"//g" | sed "s/\".*//g" | grep "tar\." | grep -v "systemd" | \
              grep -v "nomultilib" | grep -v "musl" | grep "amd64-" | grep -v "hardened" | sort -V | head -n 1)" -O chroot/gentoo.tar.xz
-          cd chroot && sudo tar -zxf  gentoo.tar.xz && cd ..
+          cd chroot && sudo tar -xf  gentoo.tar.xz && cd ..
+          sudo touch chroot/etc/make.conf
           echo -e "GENTOO_MIRRORS=\"https://mirrors.evowise.com/gentoo/ https://mirrors.lug.mtu.edu/gentoo/\"" | sudo tee -a chroot/etc/make.conf
+          sudo rm -f chroot/gentoo.tar.xz
           sudo mount --bind /dev chroot/dev
           sudo mount --bind /sys chroot/sys
           sudo mount --bind /proc chroot/proc
